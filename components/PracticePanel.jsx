@@ -64,9 +64,12 @@ export default function PracticePanel({ category, count }) {
     try {
       const res = await scoreSentence(token, {
         src: current,
-        mt: answer.trim()
+        mt: answer.trim(),
       });
-      const s = typeof res === "object" && res !== null && "score" in res ? res.score : null;
+      const s =
+        typeof res === "object" && res !== null && "score" in res
+          ? res.score
+          : null;
       if (s === null || Number.isNaN(Number(s))) {
         throw new Error("점수를 읽을 수 없어요. 백엔드를 확인해봐.");
       }
@@ -91,6 +94,26 @@ export default function PracticePanel({ category, count }) {
     setScore(null);
     setMessage("");
     setError("");
+  }
+
+  // ✅ textarea 단축키 핸들러
+  function handleTextareaKeyDown(e) {
+    // Ctrl+Enter / Cmd+Enter -> 채점
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      if (!scoring && current) {
+        handleScore();
+      }
+      return;
+    }
+    // Alt+Enter -> 다음 문장
+    if (e.altKey && e.key === "Enter") {
+      e.preventDefault();
+      if (sentences.length) {
+        handleNext();
+      }
+      return;
+    }
   }
 
   return (
@@ -128,19 +151,28 @@ export default function PracticePanel({ category, count }) {
                 : "아직 세션 없음"}
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-100 min-h-[40px]">
+          <p
+            className="text-xs sm:text-sm text-slate-100 min-h-[40px]"
+            translate="no"
+          >
             {current || "카테고리와 개수 정하고 [세션 시작] 눌러줘."}
           </p>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-[9px] text-slate-400">Your English</label>
+        <div className="space-y-1.5">
+          <label className="text-[9px] text-slate-400 flex items-center gap-2">
+            Your English
+            <span className="text-[7px] text-slate-500">
+              ⌃/⌘ + Enter = 채점 · ⌥ + Enter = 다음
+            </span>
+          </label>
           <textarea
             rows={3}
             className="input min-h-[70px] resize-y"
             placeholder="여기에 영어로 번역을 적어봐."
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
+            onKeyDown={handleTextareaKeyDown}
           />
         </div>
 
@@ -150,14 +182,14 @@ export default function PracticePanel({ category, count }) {
             disabled={scoring || !current}
             className="btn-primary text-[10px] sm:text-xs"
           >
-            {scoring ? "채점 중..." : "AI 채점하기"}
+            {scoring ? "채점 중..." : "AI 채점하기 (ctrl+Enter)"}
           </button>
           <button
             onClick={handleNext}
             disabled={!sentences.length}
             className="btn-ghost text-[10px] sm:text-xs"
           >
-            다음 문장
+            다음 문장 (alt+Enter)
           </button>
           {sentences.length > 0 && (
             <span className="ml-auto text-[8px] text-slate-500">

@@ -25,7 +25,6 @@ export default function HomePage() {
             </span>
           </h1>
           <p className="max-w-xl text-xs sm:text-sm text-slate-400">
-            Daily Life, Travel, Job, Bank, Date &amp; Time.
             <br className="hidden sm:block" />
             워홀/이민/취업에 바로 쓰이는 한국어 문장을 뽑아서,
             <span className="text-sky-300"> 네 번역을 AI가 0~100점으로 바로 채점</span>해준다.
@@ -73,7 +72,7 @@ export default function HomePage() {
                 <span>KR</span>
                 <span className="text-[8px] text-sky-400">Daily Life #03</span>
               </div>
-              <p className="mt-1 text-slate-100">
+              <p className="mt-1 text-slate-100" translate="no">
                 오늘 면접이 오후 3시에 있는데, 길이 막히면 안 돼요.
               </p>
             </div>
