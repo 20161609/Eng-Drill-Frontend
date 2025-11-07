@@ -15,7 +15,6 @@ export default function PracticePanel({ category, count }) {
   const [scoring, setScoring] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
   const current = sentences[index] || null;
 
   async function handleStart() {
@@ -96,7 +95,7 @@ export default function PracticePanel({ category, count }) {
     setError("");
   }
 
-  // ✅ textarea 단축키 핸들러
+  // ✅ textarea Short Cut
   function handleTextareaKeyDown(e) {
     // Ctrl+Enter / Cmd+Enter -> 채점
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
